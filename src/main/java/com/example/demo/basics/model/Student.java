@@ -22,6 +22,7 @@ import java.util.Map;
 		"annotations"
 	}
 )
+// Central plain-Java example used to teach fields, constructors, methods, collections, and control flow.
 public class Student {
 
 	private final long id;
@@ -47,6 +48,7 @@ public class Student {
 		List<String> subjects,
 		Map<String, Integer> scores
 	) {
+		// Defensive copies keep callers from mutating the internal state by accident.
 		this.id = id;
 		this.name = name;
 		this.age = age;
@@ -60,6 +62,7 @@ public class Student {
 	}
 
 	public void enroll(String subject) {
+		// Early return keeps invalid values out of the subjects list.
 		if (subject == null || subject.isBlank()) {
 			return;
 		}
@@ -67,6 +70,7 @@ public class Student {
 	}
 
 	public void addScore(String subject, int score) {
+		// Throwing an exception is the explicit "fail fast" path for invalid state.
 		if (score < 0 || score > 100) {
 			throw new InvalidScoreException("Score must be between 0 and 100");
 		}
@@ -81,6 +85,7 @@ public class Student {
 	}
 
 	public int totalScore() {
+		// Classic for-each loop example over a Map's values.
 		int total = 0;
 		for (int value : scores.values()) {
 			total += value;
@@ -93,6 +98,7 @@ public class Student {
 			return "No subjects yet";
 		}
 
+		// StringBuilder is efficient when building strings in a loop.
 		StringBuilder summary = new StringBuilder();
 		for (String subject : subjects) {
 			if (!summary.isEmpty()) {
@@ -104,6 +110,7 @@ public class Student {
 	}
 
 	public Student withId(long newId) {
+		// Returns a new instance instead of mutating the id after construction.
 		return new Student(newId, name, age, active, subjects, scores);
 	}
 

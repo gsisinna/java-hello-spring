@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BoxTest {
 
 	@Test
+	// Same class, different type parameters: that is the core generics idea.
 	void genericClassWorksWithDifferentTypes() {
 		Box<String> textBox = new Box<>("Java");
 		Box<Integer> numberBox = new Box<>(17);

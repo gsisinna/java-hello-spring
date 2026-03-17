@@ -26,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courses")
 @Tag(name = "Courses", description = "Database-backed examples for validation, JPA, H2, and security.")
+// Second controller path: shows validation, persistence, and security together.
 public class CourseController {
 
 	private final CourseService courseService;

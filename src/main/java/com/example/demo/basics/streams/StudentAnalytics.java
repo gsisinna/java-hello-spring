@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+// Stream examples that transform a list of students into derived data.
 public class StudentAnalytics {
 
 	public List<String> activeStudentNames(List<Student> students) {

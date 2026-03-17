@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "courses")
+// JPA entity mapped to the "courses" table in the H2 database.
 public class CourseEntity {
 
 	@Id
@@ -28,6 +29,7 @@ public class CourseEntity {
 	private boolean published;
 
 	protected CourseEntity() {
+		// Required by JPA when it creates entity instances reflectively.
 	}
 
 	public CourseEntity(String title, String level, int durationInHours, boolean published) {

@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+// Repository-level persistence test against the in-memory H2 database.
 class CourseRepositoryTest {
 
 	@Autowired

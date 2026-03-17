@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+// Central place for OpenAPI metadata shown in Swagger UI and the generated YAML.
 public class OpenApiConfig {
 
 	@Bean

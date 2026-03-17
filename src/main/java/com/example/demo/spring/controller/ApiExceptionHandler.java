@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+// Converts thrown exceptions into consistent JSON responses for API clients.
 public class ApiExceptionHandler {
 
 	@ExceptionHandler(StudentNotFoundException.class)
@@ -35,6 +36,7 @@ public class ApiExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorResponse handleValidation(MethodArgumentNotValidException exception) {
+		// Returning the first field error keeps the learning example small and readable.
 		String message = exception.getBindingResult().getFieldErrors().stream()
 			.findFirst()
 			.map(error -> error.getField() + ": " + error.getDefaultMessage())

@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 class CourseServiceTest {
 
 	@Test
+	// Mocking the repository keeps this test focused on service behavior only.
 	void createMapsRequestIntoEntityAndResponse() {
 		CourseRepository repository = mock(CourseRepository.class);
 		when(repository.save(any(CourseEntity.class)))
@@ -45,6 +46,7 @@ class CourseServiceTest {
 
 	private static class CourseEntityFixture {
 		private CourseEntity savedEntity() {
+			// Reflection is used here only to simulate a database-generated id in a unit test.
 			CourseEntity entity = new CourseEntity("Spring Security", "advanced", 8, true);
 			try {
 				var field = CourseEntity.class.getDeclaredField("id");

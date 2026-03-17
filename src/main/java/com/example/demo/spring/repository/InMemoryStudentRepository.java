@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
+// Simple fake repository that keeps data in memory instead of a database.
 public class InMemoryStudentRepository {
 
 	private final Map<Long, Student> students = new LinkedHashMap<>();
 	private long nextId = 1L;
 
 	public InMemoryStudentRepository() {
+		// Seed data makes the API immediately useful when the app starts.
 		Student ada = new Student("Ada", 20);
 		ada.activate();
 		ada.enroll("classes and objects");

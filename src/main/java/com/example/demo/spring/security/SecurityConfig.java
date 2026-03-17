@@ -13,6 +13,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+// Minimal security setup: docs and student endpoints are public, course endpoints require auth.
 public class SecurityConfig {
 
 	@Bean
@@ -38,6 +39,7 @@ public class SecurityConfig {
 
 	@Bean
 	public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+		// In-memory users keep the example small and avoid a security database setup.
 		UserDetails user = User.withUsername("student")
 			.password(passwordEncoder.encode("password"))
 			.roles("STUDENT")

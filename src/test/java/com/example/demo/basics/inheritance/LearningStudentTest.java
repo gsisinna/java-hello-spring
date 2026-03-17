@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LearningStudentTest {
 
 	@Test
+	// Parent reference + child implementation demonstrates polymorphism.
 	void subclassOverridesParentBehavior() {
 		Person student = new LearningStudent("Mia", "Spring Boot");
 

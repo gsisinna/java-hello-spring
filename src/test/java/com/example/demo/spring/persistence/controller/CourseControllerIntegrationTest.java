@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+// Integration test that covers HTTP, validation, security, and persistence together.
 class CourseControllerIntegrationTest {
 
 	@Autowired

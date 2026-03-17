@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Schema(name = "CreateCourseRequest", description = "Request body used to create a persistent course.")
+// Request DTO with validation rules that Spring checks before the service runs.
 public record CreateCourseRequest(
 	@NotBlank
 	@Size(min = 3, max = 100)

@@ -1,5 +1,6 @@
 package com.example.demo.basics.inheritance;
 
+// Child class that inherits state from Person and overrides behavior.
 public class LearningStudent extends Person {
 
 	private final String track;

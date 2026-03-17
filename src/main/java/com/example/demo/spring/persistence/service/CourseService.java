@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+// Service layer for the database-backed example.
 public class CourseService {
 
 	private final CourseRepository courseRepository;
@@ -19,6 +20,7 @@ public class CourseService {
 	}
 
 	public List<CourseResponse> findAll() {
+		// Map entities to DTOs so the controller never exposes JPA objects directly.
 		return courseRepository.findAll().stream()
 			.map(this::toResponse)
 			.toList();

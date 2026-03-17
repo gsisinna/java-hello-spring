@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Schema(name = "CreateStudentRequest", description = "Request body used to create a new student.")
+// Record example: concise immutable carrier for incoming JSON.
 public record CreateStudentRequest(
 	@Schema(description = "Student name", example = "Lina")
 	String name,

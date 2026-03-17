@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+// Verifies that docs are exposed as real runtime endpoints, not just compile-time annotations.
 class OpenApiDocumentationTest {
 
 	@Autowired

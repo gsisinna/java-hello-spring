@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+// Standard Spring Boot entry point. Running main() starts the embedded server.
 public class DemoApplication {
 
 	public static void main(String[] args) {

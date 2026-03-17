@@ -25,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/students")
 @Tag(name = "Students", description = "Student examples for learning Spring Boot controllers, services, and dependency injection.")
+// Thin controller: it maps HTTP requests to service calls and returns DTOs.
 public class StudentController {
 
 	private final StudentService studentService;

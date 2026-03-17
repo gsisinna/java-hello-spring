@@ -3,6 +3,7 @@ package com.example.demo.spring.persistence.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "CourseResponse", description = "Persistent course returned from the database-backed API.")
+// Response DTO for the secured course API.
 public record CourseResponse(
 	@Schema(description = "Generated database id", example = "1")
 	Long id,

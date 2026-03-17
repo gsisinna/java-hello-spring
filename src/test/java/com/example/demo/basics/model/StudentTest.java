@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StudentTest {
 
 	@Test
+	// This test walks through the basic Java features shown by Student.
 	void studentShowsCoreJavaConceptsInOneClass() {
 		Student student = new Student("Mia", 19);
 

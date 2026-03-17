@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Schema(name = "StudentResponse", description = "Response returned by the student API.")
+// Outgoing DTO used instead of exposing internal domain objects directly.
 public record StudentResponse(
 	@Schema(description = "Generated student id", example = "3")
 	long id,

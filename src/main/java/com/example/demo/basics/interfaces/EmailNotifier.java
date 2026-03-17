@@ -1,5 +1,6 @@
 package com.example.demo.basics.interfaces;
 
+// One implementation of the Notifier contract.
 public class EmailNotifier implements Notifier {
 
 	@Override

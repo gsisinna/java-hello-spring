@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+// Full MVC test for the public student endpoints.
 class StudentControllerTest {
 
 	@Autowired

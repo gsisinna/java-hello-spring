@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+// Custom annotation used to tag classes with the concepts they are meant to teach.
 public @interface LearningExample {
 
 	String title();

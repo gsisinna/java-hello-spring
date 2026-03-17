@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class NotifierTest {
 
 	@Test
+	// Code written against the interface can swap implementations later.
 	void interfaceImplementationCanBeUsedPolymorphically() {
 		Notifier notifier = new EmailNotifier();
 

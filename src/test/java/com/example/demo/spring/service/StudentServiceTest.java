@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StudentServiceTest {
 
 	@Test
+	// Unit-style test for the service mapping and creation logic.
 	void createStudentBuildsResponseFromRequestModel() {
 		StudentService service = new StudentService(new InMemoryStudentRepository());
 

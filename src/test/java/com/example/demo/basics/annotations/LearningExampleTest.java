@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class LearningExampleTest {
 
 	@Test
+	// Reflection lets the test inspect annotation values at runtime.
 	void studentClassUsesCustomAnnotation() {
 		LearningExample annotation = Student.class.getAnnotation(LearningExample.class);
 

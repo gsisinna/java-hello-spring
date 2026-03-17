@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class StudentAnalyticsTest {
 
 	@Test
+	// The assertions match the filter/map/collect pipeline in StudentAnalytics.
 	void streamOperationsFilterMapAndCollect() {
 		Student ada = new Student("Ada", 20);
 		ada.activate();

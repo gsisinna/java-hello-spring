@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+// Service layer for the simpler in-memory student example.
 public class StudentService {
 
 	private final InMemoryStudentRepository repository;
@@ -21,6 +22,7 @@ public class StudentService {
 	}
 
 	public List<StudentResponse> findAll() {
+		// Convert domain objects into response DTOs before returning to the controller.
 		List<StudentResponse> responses = new ArrayList<>();
 		for (Student student : repository.findAll()) {
 			responses.add(toResponse(student));
@@ -35,6 +37,7 @@ public class StudentService {
 	}
 
 	public StudentResponse createStudent(CreateStudentRequest request) {
+		// Build the domain object step by step so each concept stays visible.
 		Student student = new Student(request.name(), request.age());
 
 		if (request.active()) {

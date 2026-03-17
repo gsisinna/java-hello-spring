@@ -95,6 +95,16 @@ curl -X POST http://localhost:8080/api/students \
 ./gradlew test
 ```
 
+## GitHub CI
+
+This repo includes a GitHub Actions workflow at `.github/workflows/ci.yml`.
+
+It runs on every push and pull request, sets up Java 17, and executes:
+
+```bash
+./gradlew test --no-daemon
+```
+
 ## What to edit first
 
 1. In `Student.java`, change how `level()` works.

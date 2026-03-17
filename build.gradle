@@ -28,3 +28,81 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('exportOpenApiYaml') {
+	group = 'documentation'
+	description = 'Starts the app temporarily and exports the generated OpenAPI YAML to openapi.yaml in the project root.'
+	dependsOn tasks.named('bootJar')
+
+	doLast {
+		def outputFile = layout.projectDirectory.file('openapi.yaml').asFile
+		def jarFile = tasks.named('bootJar').get().archiveFile.get().asFile
+		def port = 9091
+		def processOutput = new StringBuffer()
+
+		def process = new ProcessBuilder(
+			'java',
+			'-jar',
+			jarFile.absolutePath,
+			"--server.port=${port}",
+			'--spring.main.banner-mode=off'
+		)
+			.directory(project.projectDir)
+			.redirectErrorStream(true)
+			.start()
+
+		def processLogThread = Thread.startDaemon('openapi-export-log') {
+			try {
+				process.inputStream.withReader('UTF-8') { reader ->
+					char[] buffer = new char[1024]
+					int read
+					while ((read = reader.read(buffer)) != -1) {
+						processOutput.append(buffer, 0, read)
+					}
+				}
+			} catch (IOException ignored) {
+				// The process stream closes during shutdown.
+			}
+		}
+
+		try {
+			def yamlUrl = new URL("http://127.0.0.1:${port}/v3/api-docs.yaml")
+			def deadline = System.currentTimeMillis() + 30000
+			def exported = false
+
+			while (System.currentTimeMillis() < deadline) {
+				if (!process.isAlive()) {
+					throw new GradleException("Application exited before OpenAPI YAML export completed.\n${processOutput}")
+				}
+
+				try {
+					def connection = yamlUrl.openConnection()
+					connection.connectTimeout = 1000
+					connection.readTimeout = 1000
+					connection.setRequestProperty('Accept', 'application/vnd.oai.openapi')
+
+					connection.inputStream.withCloseable { stream ->
+						outputFile.setText(stream.getText('UTF-8'), 'UTF-8')
+					}
+
+					exported = true
+					break
+				} catch (IOException ignored) {
+					sleep(500)
+				}
+			}
+
+			if (!exported) {
+				throw new GradleException("Timed out waiting for ${yamlUrl}.\n${processOutput}")
+			}
+
+			logger.lifecycle("OpenAPI YAML exported to ${outputFile}")
+		} finally {
+			process.destroy()
+			if (!process.waitFor(5, java.util.concurrent.TimeUnit.SECONDS)) {
+				process.destroyForcibly()
+			}
+			processLogThread.join(1000)
+		}
+	}
+}

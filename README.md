@@ -101,6 +101,18 @@ After starting the app with `./gradlew bootRun`, open:
 
 Swagger UI is generated from the controller and model annotations in the code.
 
+To export the generated YAML to a file automatically, run:
+
+```bash
+./gradlew exportOpenApiYaml
+```
+
+That writes:
+
+```text
+openapi.yaml
+```
+
 ## Run the tests
 
 ```bash

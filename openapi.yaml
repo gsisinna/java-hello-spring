@@ -1,0 +1,209 @@
+openapi: 3.1.0
+info:
+  title: Java Spring Learning API
+  description: "Learning project for core Java concepts, Spring Boot, Swagger UI,\
+    \ and OpenAPI YAML."
+  contact:
+    name: Learning Repo
+    url: https://example.com
+  license:
+    name: For learning use
+    url: https://opensource.org/licenses/MIT
+  version: v1
+servers:
+- url: http://127.0.0.1:9091
+  description: Generated server url
+tags:
+- name: Students
+  description: "Student examples for learning Spring Boot controllers, services, and\
+    \ dependency injection."
+paths:
+  /api/students:
+    get:
+      tags:
+      - Students
+      summary: List students
+      description: Returns the in-memory student list used by this learning project.
+      operationId: findAll
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "200":
+          description: Students loaded successfully
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudentResponse"
+    post:
+      tags:
+      - Students
+      summary: Create a student
+      description: Creates a new student from a request model and returns the response
+        model.
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStudentRequest"
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "400":
+          description: Invalid request data
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "201":
+          description: Student created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StudentResponse"
+  /api/students/{id}:
+    get:
+      tags:
+      - Students
+      summary: Get a student by id
+      description: Returns one student or a 404 error if the student does not exist.
+      operationId: findById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Student not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "200":
+          description: Student found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StudentResponse"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Error payload returned when the API rejects a request.
+      properties:
+        message:
+          type: string
+        hint:
+          type: string
+    CreateStudentRequest:
+      type: object
+      description: Request body used to create a new student.
+      properties:
+        name:
+          type: string
+          description: Student name
+          example: Lina
+        age:
+          type: integer
+          format: int32
+          description: Student age
+          example: 23
+        active:
+          type: boolean
+          description: Whether the student starts as active
+          example: true
+        subjects:
+          type: array
+          description: Topics that the student is studying
+          example:
+          - annotations
+          - controller
+          items:
+            type: string
+        scores:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+          description: Example scores by subject
+          example:
+            java: 91
+            spring: 89
+    StudentResponse:
+      type: object
+      description: Response returned by the student API.
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Generated student id
+          example: 3
+        name:
+          type: string
+          description: Student name
+          example: Lina
+        age:
+          type: integer
+          format: int32
+          description: Student age
+          example: 23
+        active:
+          type: boolean
+          description: Whether the student is active
+          example: true
+        level:
+          type: string
+          description: Derived level based on age
+          example: adult
+        subjects:
+          type: array
+          description: Topics being studied
+          example:
+          - annotations
+          - controller
+          items:
+            type: string
+        scores:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+          description: Scores by subject
+          example:
+            java: 91
+            spring: 89
+        totalScore:
+          type: integer
+          format: int32
+          description: Total of all score values
+          example: 180
+        subjectSummary:
+          type: string
+          description: Readable summary of the subjects list
+          example: "annotations, controller"

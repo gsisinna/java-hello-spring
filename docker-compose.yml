@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: java-spring-learning:local
+    ports:
+      - "8080:8080"
+
+  test:
+    image: eclipse-temurin:17-jdk-jammy
+    working_dir: /workspace
+    command: ["./gradlew", "--no-daemon", "test"]
+    volumes:
+      - .:/workspace
+      - gradle-cache:/root/.gradle
+
+volumes:
+  gradle-cache:

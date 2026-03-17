@@ -60,6 +60,25 @@ Read these files in order:
 
 The app starts on `http://localhost:8080`.
 
+## Run with Docker
+
+Build and start the app container:
+
+```bash
+docker compose up --build app
+```
+
+Then open:
+
+- `http://localhost:8080/api/students`
+- `http://localhost:8080/swagger-ui.html`
+
+To stop it:
+
+```bash
+docker compose down
+```
+
 ## Try the API
 
 Get the seeded students:
@@ -117,6 +136,12 @@ openapi.yaml
 
 ```bash
 ./gradlew test
+```
+
+Run the tests inside a container:
+
+```bash
+docker compose run --rm test
 ```
 
 ## GitHub CI

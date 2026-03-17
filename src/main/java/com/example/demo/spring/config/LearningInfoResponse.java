@@ -9,7 +9,7 @@ import java.util.List;
 public record LearningInfoResponse(
 	@Schema(description = "Configured learning title", example = "Java + Spring Boot Learning Repo")
 	String title,
-	@Schema(description = "Configured focus topics", example = "[\"java basics\", \"spring mvc\", \"jpa\"]")
+	@Schema(description = "Configured focus topics", example = "[\"java basics\", \"spring mvc\", \"mongodb\"]")
 	List<String> focusTopics
 ) {
 }

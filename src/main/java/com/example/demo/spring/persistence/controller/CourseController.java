@@ -27,8 +27,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/courses")
-@Tag(name = "Courses", description = "Database-backed examples for validation, JPA, H2, and security.")
-// Second controller path: shows validation, persistence, and security together.
+@Tag(name = "Courses", description = "MongoDB-backed examples for validation, JSON request/response models, and security.")
+// Second controller path: shows validation, JSON APIs, MongoDB persistence, and security together.
 public class CourseController {
 
 	private final CourseService courseService;
@@ -38,7 +38,7 @@ public class CourseController {
 	}
 
 	@GetMapping
-	@Operation(summary = "List courses", description = "Returns all persisted courses. This endpoint requires basic authentication.")
+	@Operation(summary = "List courses", description = "Returns all persisted course documents as JSON. This endpoint requires basic authentication.")
 	@ApiResponse(
 		responseCode = "200",
 		description = "Courses loaded successfully",
@@ -49,7 +49,7 @@ public class CourseController {
 	}
 
 	@GetMapping("/{id}")
-	@Operation(summary = "Get a course by id", description = "Returns one persisted course.")
+	@Operation(summary = "Get a course by id", description = "Returns one persisted course document.")
 	@ApiResponses({
 		@ApiResponse(
 			responseCode = "200",
@@ -62,13 +62,13 @@ public class CourseController {
 			content = @Content(schema = @Schema(implementation = ErrorResponse.class))
 		)
 	})
-	public CourseResponse findById(@PathVariable long id) {
+	public CourseResponse findById(@PathVariable String id) {
 		return courseService.findById(id);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@Operation(summary = "Create a course", description = "Validates the request body and stores a course in H2.")
+	@Operation(summary = "Create a course", description = "Validates the request body and stores a course document in MongoDB.")
 	@ApiResponses({
 		@ApiResponse(
 			responseCode = "201",
@@ -86,7 +86,7 @@ public class CourseController {
 	}
 
 	@PutMapping("/{id}")
-	@Operation(summary = "Update a course", description = "Replaces an existing course using the validated request body.")
+	@Operation(summary = "Update a course", description = "Replaces an existing MongoDB document using the validated JSON request body.")
 	@ApiResponses({
 		@ApiResponse(
 			responseCode = "200",
@@ -99,13 +99,13 @@ public class CourseController {
 			content = @Content(schema = @Schema(implementation = ErrorResponse.class))
 		)
 	})
-	public CourseResponse update(@PathVariable long id, @Valid @RequestBody CreateCourseRequest request) {
+	public CourseResponse update(@PathVariable String id, @Valid @RequestBody CreateCourseRequest request) {
 		return courseService.update(id, request);
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "Delete a course", description = "Deletes a course by id.")
+	@Operation(summary = "Delete a course", description = "Deletes a course document by id.")
 	@ApiResponses({
 		@ApiResponse(responseCode = "204", description = "Course deleted"),
 		@ApiResponse(
@@ -114,7 +114,7 @@ public class CourseController {
 			content = @Content(schema = @Schema(implementation = ErrorResponse.class))
 		)
 	})
-	public void delete(@PathVariable long id) {
+	public void delete(@PathVariable String id) {
 		courseService.delete(id);
 	}
 }

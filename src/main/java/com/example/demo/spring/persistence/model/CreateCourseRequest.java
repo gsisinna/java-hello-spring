@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@Schema(name = "CreateCourseRequest", description = "Request body used to create a persistent course.")
+@Schema(name = "CreateCourseRequest", description = "Request body used to create a MongoDB-backed course.")
 // Request DTO with validation rules that Spring checks before the service runs.
 public record CreateCourseRequest(
 	@NotBlank

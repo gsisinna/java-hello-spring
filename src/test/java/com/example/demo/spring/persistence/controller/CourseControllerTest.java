@@ -1,12 +1,27 @@
 package com.example.demo.spring.persistence.controller;
 
+import com.example.demo.spring.controller.ApiExceptionHandler;
+import com.example.demo.spring.persistence.model.CourseLevel;
+import com.example.demo.spring.persistence.model.CourseResponse;
+import com.example.demo.spring.persistence.model.CreateCourseRequest;
+import com.example.demo.spring.persistence.service.CourseService;
+import com.example.demo.spring.security.SecurityConfig;
+import com.example.demo.spring.springcommon.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,13 +31,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-// Integration test that covers HTTP, validation, security, and persistence together.
-class CourseControllerIntegrationTest {
+@WebMvcTest(CourseController.class)
+@Import({SecurityConfig.class, ApiExceptionHandler.class})
+@TestPropertySource(properties = {
+	"app.security.username=student",
+	"app.security.password=password",
+	"app.security.role=STUDENT"
+})
+// Web-layer test for the secured JSON API backed by a mocked service.
+class CourseControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockitoBean
+	private CourseService courseService;
 
 	@Test
 	void coursesRequireBasicAuthentication() throws Exception {
@@ -31,10 +54,15 @@ class CourseControllerIntegrationTest {
 	}
 
 	@Test
-	void authenticatedRequestReturnsSeededCourses() throws Exception {
+	void authenticatedRequestReturnsCourseDocumentsAsJson() throws Exception {
+		when(courseService.findAll()).thenReturn(List.of(
+			new CourseResponse("course-101", "Java Generics Deep Dive", CourseLevel.INTERMEDIATE, 6, true)
+		));
+
 		mockMvc.perform(get("/api/courses").with(httpBasic("student", "password")))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$[0].id").value("course-101"))
 			.andExpect(jsonPath("$[0].title").value("Java Generics Deep Dive"));
 	}
 
@@ -57,27 +85,33 @@ class CourseControllerIntegrationTest {
 	}
 
 	@Test
-	void validCoursePayloadPersistsInH2() throws Exception {
+	void validCoursePayloadReturnsCreatedDocument() throws Exception {
+		when(courseService.create(any(CreateCourseRequest.class)))
+			.thenReturn(new CourseResponse("course-202", "Spring Data MongoDB", CourseLevel.INTERMEDIATE, 7, true));
+
 		mockMvc.perform(post("/api/courses")
 				.with(httpBasic("student", "password"))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
 					{
-					  "title": "Spring Data JPA",
+					  "title": "Spring Data MongoDB",
 					  "level": "INTERMEDIATE",
 					  "durationInHours": 7,
 					  "published": true
 					}
 					"""))
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.title").value("Spring Data JPA"))
-			.andExpect(jsonPath("$.durationInHours").value(7))
+			.andExpect(jsonPath("$.id").value("course-202"))
+			.andExpect(jsonPath("$.title").value("Spring Data MongoDB"))
 			.andExpect(jsonPath("$.level").value("INTERMEDIATE"));
 	}
 
 	@Test
 	void updateCourseReplacesStoredValues() throws Exception {
-		mockMvc.perform(put("/api/courses/1")
+		when(courseService.update(any(String.class), any(CreateCourseRequest.class)))
+			.thenReturn(new CourseResponse("course-101", "Updated Java Generics", CourseLevel.ADVANCED, 10, false));
+
+		mockMvc.perform(put("/api/courses/course-101")
 				.with(httpBasic("student", "password"))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -89,17 +123,21 @@ class CourseControllerIntegrationTest {
 					}
 					"""))
 			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value("course-101"))
 			.andExpect(jsonPath("$.title").value("Updated Java Generics"))
-			.andExpect(jsonPath("$.level").value("ADVANCED"))
 			.andExpect(jsonPath("$.published").value(false));
 	}
 
 	@Test
-	void deleteCourseRemovesExistingRecord() throws Exception {
-		mockMvc.perform(delete("/api/courses/2").with(httpBasic("student", "password")))
+	void deleteCourseRemovesExistingDocument() throws Exception {
+		doNothing().when(courseService).delete("course-202");
+		doThrow(new ResourceNotFoundException("Course with id course-202 was not found"))
+			.when(courseService).findById("course-202");
+
+		mockMvc.perform(delete("/api/courses/course-202").with(httpBasic("student", "password")))
 			.andExpect(status().isNoContent());
 
-		mockMvc.perform(get("/api/courses/2").with(httpBasic("student", "password")))
+		mockMvc.perform(get("/api/courses/course-202").with(httpBasic("student", "password")))
 			.andExpect(status().isNotFound());
 	}
 }

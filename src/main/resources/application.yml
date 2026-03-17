@@ -1,21 +1,9 @@
 spring:
   application:
     name: java-spring-learning
-  datasource:
-    url: jdbc:h2:mem:learningdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/java_spring_learning}
 
 springdoc:
   swagger-ui:
@@ -31,7 +19,7 @@ app:
       - java basics
       - spring mvc
       - validation
-      - jpa
+      - mongodb
       - security
   security:
     username: student

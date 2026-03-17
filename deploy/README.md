@@ -5,7 +5,7 @@ This folder contains a simple single-server deployment target for the app.
 ## Files
 
 - `docker-compose.prod.yml`
-  - production stack with the app and PostgreSQL
+  - production stack with the app and MongoDB
 - `app.env.example`
   - environment variables you should copy and customize before deployment
 
@@ -33,7 +33,7 @@ curl http://localhost:8080/actuator/health
 
 ## Notes
 
-- The production profile uses PostgreSQL instead of H2.
+- The production profile uses MongoDB for persisted course documents.
 - Swagger UI is disabled in the production profile.
 - The app still exposes `/actuator/health` for deployment checks.
 - For internet-facing deployment, put a reverse proxy or load balancer in front of the app.

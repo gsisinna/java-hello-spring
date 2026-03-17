@@ -9,8 +9,8 @@ Real projects need more than one kind of test.
 This repo shows:
 
 - unit tests
-- repository persistence tests
-- integration tests
+- configuration tests
+- web/controller tests
 
 ## Unit tests
 
@@ -35,31 +35,28 @@ What they teach:
 - testing single classes
 - mocking with Mockito in `CourseServiceTest`
 
-## Repository tests
+## Configuration tests
 
 Example:
 
-- `CourseRepositoryTest`
+- `CourseDataInitializerTest`
 
 Purpose:
 
-- verify JPA + H2 persistence behavior
-- confirm the repository can save and retrieve entities
+- verify seed behavior without needing a live MongoDB server
+- confirm the app only inserts sample documents when the collection is empty
 
-This repo uses a Spring Boot integration-style repository test for compatibility with the current Boot 4 setup.
-
-## Controller integration tests
+## Controller tests
 
 Examples:
 
 - `StudentControllerTest`
-- `CourseControllerIntegrationTest`
+- `CourseControllerTest`
 - `OpenApiDocumentationTest`
 
 These tests use:
 
-- `@SpringBootTest`
-- `@AutoConfigureMockMvc`
+- `@SpringBootTest` or `@WebMvcTest`
 - `MockMvc`
 
 What they teach:
@@ -94,7 +91,7 @@ Run all tests:
 Run one test class:
 
 ```bash
-./gradlew test --tests com.example.demo.spring.persistence.controller.CourseControllerIntegrationTest
+./gradlew test --tests com.example.demo.spring.persistence.controller.CourseControllerTest
 ```
 
 Run one test method:

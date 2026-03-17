@@ -29,12 +29,13 @@ Deployment notes and production files are in [deploy/README.md](./deploy/README.
 - service
 - dependency injection
 - request/response model
+- JSON request/response flow
 - Swagger UI
 - OpenAPI YAML
 - validation
-- JPA + H2 persistence
+- MongoDB persistence
 - basic authentication with Spring Security
-- unit, repository, and integration tests
+- unit and web-layer tests
 - enums
 - `@ConfigurationProperties`
 
@@ -52,7 +53,7 @@ Read these files in order:
 8. `src/main/java/com/example/demo/spring/persistence/service/CourseService.java`
 9. `src/main/java/com/example/demo/spring/persistence/controller/CourseController.java`
 10. `src/main/java/com/example/demo/spring/config/AppLearningProperties.java`
-11. `src/test/java/com/example/demo/spring/persistence/controller/CourseControllerIntegrationTest.java`
+11. `src/test/java/com/example/demo/spring/persistence/controller/CourseControllerTest.java`
 
 ## Package guide
 
@@ -79,11 +80,19 @@ Read these files in order:
 - `com.example.demo.spring.model`
   - request and response models
 - `com.example.demo.spring.persistence`
-  - validation, JPA, H2, and security examples
+  - validation, MongoDB documents, JSON APIs, and security examples
 - `com.example.demo.spring.config`
   - OpenAPI config and typed configuration properties
 
 ## Run the app
+
+Start MongoDB first:
+
+```bash
+docker compose up -d mongo
+```
+
+Then run the app:
 
 ```bash
 ./gradlew bootRun
@@ -93,7 +102,7 @@ The app starts on `http://localhost:8080`.
 
 ## Production deployment
 
-This repo now includes a simple production deployment target using Docker Compose and PostgreSQL.
+This repo now includes a simple production deployment target using Docker Compose and MongoDB.
 
 Main files:
 
@@ -103,7 +112,7 @@ Main files:
 
 Main production differences:
 
-- PostgreSQL instead of H2
+- MongoDB for persisted course documents
 - `prod` Spring profile
 - externalized credentials
 - public `/actuator/health` endpoint for health checks
@@ -129,7 +138,7 @@ Then open:
 
 - `http://localhost:8080/api/students`
 - `http://localhost:8080/swagger-ui.html`
-- `http://localhost:8080/h2-console`
+- `http://localhost:8080/api/courses`
 
 To stop it:
 
@@ -180,13 +189,13 @@ Show typed configuration properties:
 curl http://localhost:8080/api/learning-info
 ```
 
-Create a secured database-backed course:
+Create a secured MongoDB-backed course:
 
 ```bash
 curl -u student:password -X POST http://localhost:8080/api/courses \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "Spring Data JPA",
+    "title": "Spring Data MongoDB",
     "level": "INTERMEDIATE",
     "durationInHours": 7,
     "published": true
@@ -196,7 +205,7 @@ curl -u student:password -X POST http://localhost:8080/api/courses \
 Update a course:
 
 ```bash
-curl -u student:password -X PUT http://localhost:8080/api/courses/1 \
+curl -u student:password -X PUT http://localhost:8080/api/courses/course-101 \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Updated Java Generics",
@@ -209,7 +218,7 @@ curl -u student:password -X PUT http://localhost:8080/api/courses/1 \
 Delete a course:
 
 ```bash
-curl -u student:password -X DELETE http://localhost:8080/api/courses/2
+curl -u student:password -X DELETE http://localhost:8080/api/courses/course-202
 ```
 
 ## Swagger and OpenAPI
@@ -249,8 +258,8 @@ docker compose run --rm test
 Different test layers in this repo:
 
 - unit tests: small classes without Spring, such as `StudentTest` and `CourseServiceTest`
-- repository tests: JPA + H2 with a Spring Boot integration test, such as `CourseRepositoryTest`
-- integration tests: full Spring Boot + MockMvc, such as `StudentControllerTest`, `CourseControllerIntegrationTest`, and `LearningInfoControllerTest`
+- configuration tests: focused tests such as `CourseDataInitializerTest`
+- web/controller tests: `StudentControllerTest`, `CourseControllerTest`, `OpenApiDocumentationTest`, and `LearningInfoControllerTest`
 
 ## GitHub CI
 
@@ -269,7 +278,7 @@ It runs on every push and pull request, sets up Java 17, and executes:
 3. In `StudentService.java`, change how new students are created.
 4. In `StudentController.java`, add a new endpoint such as `DELETE /api/students/{id}`.
 5. In `CourseController.java`, add a new secured endpoint such as `DELETE /api/courses/{id}`.
-6. In `CourseControllerIntegrationTest.java`, add a failing test before you change the code.
+6. In `CourseControllerTest.java`, add a failing test before you change the code.
 
 ## Quick concept map
 
@@ -285,9 +294,9 @@ It runs on every push and pull request, sets up Java 17, and executes:
 - Streams: `StudentAnalytics`
 - Enums: `CourseLevel`
 - Exceptions: `InvalidScoreException`, `StudentNotFoundException`
-- Annotations: `@LearningExample`, `@Service`, `@RestController`, `@RestControllerAdvice`, `@Entity`, `@Valid`
+- Annotations: `@LearningExample`, `@Service`, `@RestController`, `@RestControllerAdvice`, `@Document`, `@Valid`
 - Dependency injection: `StudentController` gets `StudentService`, `StudentService` gets `InMemoryStudentRepository`
 - Validation: `CreateCourseRequest`
-- Persistence: `CourseEntity`, `CourseRepository`, H2
+- Persistence: `CourseDocument`, `CourseRepository`, MongoDB
 - Security: HTTP basic auth for `/api/courses/**` with user `student` / `password`
 - Typed configuration: `AppLearningProperties` bound from `application.yml`

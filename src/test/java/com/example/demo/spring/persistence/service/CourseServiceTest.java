@@ -1,6 +1,6 @@
 package com.example.demo.spring.persistence.service;
 
-import com.example.demo.spring.persistence.entity.CourseEntity;
+import com.example.demo.spring.persistence.document.CourseDocument;
 import com.example.demo.spring.persistence.model.CourseLevel;
 import com.example.demo.spring.persistence.model.CourseResponse;
 import com.example.demo.spring.persistence.model.CreateCourseRequest;
@@ -20,16 +20,16 @@ class CourseServiceTest {
 
 	@Test
 	// Mocking the repository keeps this test focused on service behavior only.
-	void createMapsRequestIntoEntityAndResponse() {
+	void createMapsRequestIntoDocumentAndResponse() {
 		CourseRepository repository = mock(CourseRepository.class);
-		when(repository.save(any(CourseEntity.class)))
-			.thenReturn(new CourseEntityFixture().savedEntity());
+		when(repository.save(any(CourseDocument.class)))
+			.thenReturn(new CourseDocumentFixture().savedDocument());
 
 		CourseService service = new CourseService(repository);
 
 		CourseResponse response = service.create(new CreateCourseRequest("Spring Security", CourseLevel.ADVANCED, 8, true));
 
-		assertEquals(1L, response.id());
+		assertEquals("course-1", response.id());
 		assertEquals("Spring Security", response.title());
 		assertEquals(CourseLevel.ADVANCED, response.level());
 		assertEquals(8, response.durationInHours());
@@ -38,25 +38,25 @@ class CourseServiceTest {
 	@Test
 	void findByIdThrowsWhenCourseDoesNotExist() {
 		CourseRepository repository = mock(CourseRepository.class);
-		when(repository.findById(99L)).thenReturn(Optional.empty());
+		when(repository.findById("missing-course")).thenReturn(Optional.empty());
 
 		CourseService service = new CourseService(repository);
 
-		assertThrows(ResourceNotFoundException.class, () -> service.findById(99L));
+		assertThrows(ResourceNotFoundException.class, () -> service.findById("missing-course"));
 	}
 
-	private static class CourseEntityFixture {
-		private CourseEntity savedEntity() {
-			// Reflection is used here only to simulate a database-generated id in a unit test.
-			CourseEntity entity = new CourseEntity("Spring Security", CourseLevel.ADVANCED, 8, true);
+	private static class CourseDocumentFixture {
+		private CourseDocument savedDocument() {
+			// Reflection is used here only to simulate a generated MongoDB id in a unit test.
+			CourseDocument document = new CourseDocument("Spring Security", CourseLevel.ADVANCED, 8, true);
 			try {
-				var field = CourseEntity.class.getDeclaredField("id");
+				var field = CourseDocument.class.getDeclaredField("id");
 				field.setAccessible(true);
-				field.set(entity, 1L);
+				field.set(document, "course-1");
 			} catch (ReflectiveOperationException e) {
 				throw new IllegalStateException(e);
 			}
-			return entity;
+			return document;
 		}
 	}
 }

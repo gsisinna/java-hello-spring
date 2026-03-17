@@ -73,7 +73,7 @@ Main files:
 
 Use these when you want:
 
-- PostgreSQL instead of H2
+- MongoDB document storage
 - externalized secrets
 - health checks through `/actuator/health`
 - a deployment-oriented compose stack
@@ -93,13 +93,14 @@ Use these to compare:
 - runtime docs
 - committed API contract
 
-## H2 database
+## MongoDB
 
 Useful while learning persistence:
 
-- H2 console: `http://localhost:8080/h2-console`
+- local MongoDB container through `docker compose up --build app`
+- production-style MongoDB service through `deploy/docker-compose.prod.yml`
 
-This lets you inspect how POST requests affect the in-memory database.
+This lets you inspect how JSON requests become persisted MongoDB documents.
 
 ## Good habits to build from this repo
 

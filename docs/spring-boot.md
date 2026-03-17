@@ -12,12 +12,12 @@ A common Spring Boot flow is:
 1. controller
 2. service
 3. repository
-4. model/entity
+4. model/document
 
 This repo shows both:
 
 - simple flow with in-memory data
-- database-backed flow with JPA
+- document-backed flow with MongoDB
 
 ## Controllers
 
@@ -134,22 +134,22 @@ Handled cases include:
 - invalid score
 - request validation failures
 
-## JPA and H2
+## MongoDB and JSON documents
 
 Main files:
 
-- `CourseEntity`
+- `CourseDocument`
 - `CourseRepository`
 - `application.yml`
-- `data.sql`
+- `CourseDataInitializer`
 
 Key ideas:
 
-- `@Entity` maps a class to a database table
-- a `JpaRepository` gives CRUD operations
+- `@Document` maps a class to a MongoDB collection
+- a `MongoRepository` gives CRUD operations
 - `CourseLevel` enum keeps the `level` field restricted to valid values
-- H2 provides an in-memory database for easy learning
-- `data.sql` seeds example rows at startup
+- MongoDB stores JSON-like documents instead of rows
+- `CourseDataInitializer` seeds example documents at startup
 
 ## Spring Security
 
@@ -184,22 +184,10 @@ What it teaches:
 - generated JSON/YAML specs
 - Swagger UI as an interactive learning tool
 
-## H2 console
-
-With the app running:
-
-- `http://localhost:8080/h2-console`
-
-Use JDBC URL from `application.yml`:
-
-- `jdbc:h2:mem:learningdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE`
-
-This helps you connect API behavior to actual persisted data.
-
 ## Good next exercises
 
 1. Add `DELETE /api/courses/{id}`
 2. Add `PUT /api/courses/{id}`
 3. Add enum-based course levels
-4. Replace basic auth with role-based rules
-5. Add `@Validated` service rules
+4. Add a query endpoint such as `GET /api/courses?published=true`
+5. Replace basic auth with role-based rules

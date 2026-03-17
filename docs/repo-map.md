@@ -39,10 +39,12 @@ This page explains why each package exists.
 
 ## Spring persistence packages
 
-- `spring.persistence.entity`
-  - JPA entity classes
+- `spring.persistence.document`
+  - MongoDB document classes
 - `spring.persistence.repository`
   - Spring Data repository interfaces
+- `spring.persistence.config`
+  - seed data and persistence bootstrap
 - `spring.persistence.service`
   - business logic using the repository layer
 - `spring.persistence.controller`
@@ -62,9 +64,7 @@ This page explains why each package exists.
 ## Resource files
 
 - `application.yml`
-  - app config, H2 config, SpringDoc config
-- `data.sql`
-  - seed database records
+  - app config, MongoDB config, SpringDoc config
 - `openapi.yaml`
   - generated OpenAPI YAML committed at repo root
 
@@ -76,7 +76,7 @@ Tests mirror the production code structure on purpose.
   - explain Java concepts with assertions
 - service tests
   - isolate business logic
-- repository tests
-  - verify database persistence
+- config tests
+  - verify seed/bootstrap behavior
 - controller tests
   - verify HTTP behavior

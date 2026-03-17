@@ -73,8 +73,9 @@ Learn:
 Read:
 
 - `spring/persistence/model/CreateCourseRequest.java`
-- `spring/persistence/entity/CourseEntity.java`
+- `spring/persistence/document/CourseDocument.java`
 - `spring/persistence/repository/CourseRepository.java`
+- `spring/persistence/config/CourseDataInitializer.java`
 - `spring/persistence/service/CourseService.java`
 - `spring/persistence/controller/CourseController.java`
 - `spring/security/SecurityConfig.java`
@@ -83,8 +84,8 @@ Learn:
 
 - validation with `@Valid`
 - constraints like `@NotBlank` and `@Min`
-- JPA entity and repository
-- H2 in-memory database
+- MongoDB document mapping
+- JSON request/response flow
 - basic auth with Spring Security
 
 ## Stage 6: Testing layers
@@ -92,15 +93,15 @@ Learn:
 Read:
 
 - `CourseServiceTest`
-- `CourseRepositoryTest`
+- `CourseDataInitializerTest`
 - `StudentControllerTest`
-- `CourseControllerIntegrationTest`
+- `CourseControllerTest`
 
 Learn:
 
 - unit tests
-- repository/integration persistence tests
-- controller integration tests with `MockMvc`
+- focused configuration tests
+- controller tests with `MockMvc`
 - security test helpers
 
 ## Good practice while learning

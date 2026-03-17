@@ -1,0 +1,16 @@
+app:
+  courses:
+    seed:
+      enabled: false
+  learning:
+    title: Java + Spring Boot Learning Repo
+    focus-topics:
+      - java basics
+      - spring mvc
+      - validation
+      - mongodb
+      - security
+  security:
+    username: student
+    password: password
+    role: STUDENT

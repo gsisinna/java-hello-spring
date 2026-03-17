@@ -1,7 +1,7 @@
 package com.example.demo.spring.persistence.service;
 
+import com.example.demo.spring.persistence.document.CourseDocument;
 import com.example.demo.spring.springcommon.exception.ResourceNotFoundException;
-import com.example.demo.spring.persistence.entity.CourseEntity;
 import com.example.demo.spring.persistence.model.CourseResponse;
 import com.example.demo.spring.persistence.model.CreateCourseRequest;
 import com.example.demo.spring.persistence.repository.CourseRepository;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-// Service layer for the database-backed example.
+// Service layer for the MongoDB-backed example.
 public class CourseService {
 
 	private final CourseRepository courseRepository;
@@ -20,21 +20,21 @@ public class CourseService {
 	}
 
 	public List<CourseResponse> findAll() {
-		// Map entities to DTOs so the controller never exposes JPA objects directly.
+		// Map Mongo documents to DTOs so the controller never exposes persistence objects directly.
 		return courseRepository.findAll().stream()
 			.map(this::toResponse)
 			.toList();
 	}
 
-	public CourseResponse findById(long id) {
+	public CourseResponse findById(String id) {
 		return courseRepository.findById(id)
 			.map(this::toResponse)
 			.orElseThrow(() -> new ResourceNotFoundException("Course with id " + id + " was not found"));
 	}
 
 	public CourseResponse create(CreateCourseRequest request) {
-		CourseEntity saved = courseRepository.save(
-			new CourseEntity(
+		CourseDocument saved = courseRepository.save(
+			new CourseDocument(
 				request.title(),
 				request.level(),
 				request.durationInHours(),
@@ -44,33 +44,33 @@ public class CourseService {
 		return toResponse(saved);
 	}
 
-	public CourseResponse update(long id, CreateCourseRequest request) {
-		CourseEntity entity = courseRepository.findById(id)
+	public CourseResponse update(String id, CreateCourseRequest request) {
+		CourseDocument document = courseRepository.findById(id)
 			.orElseThrow(() -> new ResourceNotFoundException("Course with id " + id + " was not found"));
 
-		entity.update(
+		document.update(
 			request.title(),
 			request.level(),
 			request.durationInHours(),
 			request.published()
 		);
 
-		return toResponse(courseRepository.save(entity));
+		return toResponse(courseRepository.save(document));
 	}
 
-	public void delete(long id) {
-		CourseEntity entity = courseRepository.findById(id)
+	public void delete(String id) {
+		CourseDocument document = courseRepository.findById(id)
 			.orElseThrow(() -> new ResourceNotFoundException("Course with id " + id + " was not found"));
-		courseRepository.delete(entity);
+		courseRepository.delete(document);
 	}
 
-	private CourseResponse toResponse(CourseEntity entity) {
+	private CourseResponse toResponse(CourseDocument document) {
 		return new CourseResponse(
-			entity.getId(),
-			entity.getTitle(),
-			entity.getLevel(),
-			entity.getDurationInHours(),
-			entity.isPublished()
+			document.getId(),
+			document.getTitle(),
+			document.getLevel(),
+			document.getDurationInHours(),
+			document.isPublished()
 		);
 	}
 }

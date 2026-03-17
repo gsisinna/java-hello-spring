@@ -1,9 +1,7 @@
 package com.example.demo.spring.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Component
 @ConfigurationProperties(prefix = "app.security")
 // Typed security properties let deployment-specific credentials live in configuration instead of code.
 public class AppSecurityProperties {

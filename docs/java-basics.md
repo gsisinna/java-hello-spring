@@ -116,7 +116,7 @@ This is how Java projects stay readable as they grow.
 Examples:
 
 - custom annotation: `@LearningExample`
-- framework annotations later in Spring: `@Service`, `@RestController`, `@Entity`
+- framework annotations later in Spring: `@Service`, `@RestController`, `@Document`
 
 Annotations add metadata to classes and methods. In Spring, annotations drive framework behavior.
 

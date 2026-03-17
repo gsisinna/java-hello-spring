@@ -1,18 +1,7 @@
 spring:
-  datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-  h2:
-    console:
-      enabled: false
-  jpa:
-    hibernate:
-      ddl-auto: update
-  sql:
-    init:
-      mode: never
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI}
 
 springdoc:
   swagger-ui:

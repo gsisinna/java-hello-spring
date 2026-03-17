@@ -8,7 +8,7 @@ The repo includes a practical single-host deployment target:
 
 - Docker Compose
 - Spring Boot app container
-- PostgreSQL database container
+- MongoDB container
 - production Spring profile
 - externalized secrets through an env file
 
@@ -22,13 +22,13 @@ Main files:
 
 The default app setup is for learning:
 
-- H2 database
+- local MongoDB URI
 - Swagger UI enabled
 - simple local credentials
 
 The production setup changes that:
 
-- PostgreSQL replaces H2
+- MongoDB runs as a separate service
 - credentials come from environment variables
 - Swagger UI is disabled
 - `/actuator/health` stays available for health checks
@@ -41,9 +41,7 @@ File:
 
 What it does:
 
-- reads datasource settings from env vars
-- disables H2 console
-- disables SQL seed data
+- reads the MongoDB connection URI from env vars
 - keeps actuator health enabled
 - reads security credentials from env vars
 
@@ -106,7 +104,7 @@ This repo is still a learning project, so deployment is not fully enterprise-gra
 
 Still missing if you wanted a harder production setup:
 
-- database migrations with Flyway or Liquibase
+- MongoDB schema migration tooling
 - TLS termination with Nginx/Caddy or a cloud load balancer
 - image publishing to a registry
 - secret manager integration

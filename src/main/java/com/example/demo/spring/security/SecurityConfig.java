@@ -1,5 +1,6 @@
 package com.example.demo.spring.security;
 
+import com.example.demo.spring.config.AppSecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,6 +17,12 @@ import org.springframework.security.web.SecurityFilterChain;
 // Minimal security setup: docs and student endpoints are public, course endpoints require auth.
 public class SecurityConfig {
 
+	private final AppSecurityProperties securityProperties;
+
+	public SecurityConfig(AppSecurityProperties securityProperties) {
+		this.securityProperties = securityProperties;
+	}
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
@@ -26,6 +33,8 @@ public class SecurityConfig {
 					"/swagger-ui.html",
 					"/swagger-ui/**",
 					"/v3/api-docs/**",
+					"/actuator/health",
+					"/actuator/health/**",
 					"/h2-console/**",
 					"/api/learning-info",
 					"/api/students/**"
@@ -41,9 +50,9 @@ public class SecurityConfig {
 	@Bean
 	public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
 		// In-memory users keep the example small and avoid a security database setup.
-		UserDetails user = User.withUsername("student")
-			.password(passwordEncoder.encode("password"))
-			.roles("STUDENT")
+		UserDetails user = User.withUsername(securityProperties.getUsername())
+			.password(passwordEncoder.encode(securityProperties.getPassword()))
+			.roles(securityProperties.getRole())
 			.build();
 		return new InMemoryUserDetailsManager(user);
 	}

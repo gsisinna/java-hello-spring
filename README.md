@@ -3,6 +3,7 @@
 This project is built so you can learn, test, and modify small examples instead of reading a large codebase.
 
 Full repo learning notes are in [docs/README.md](./docs/README.md).
+Deployment notes and production files are in [deploy/README.md](./deploy/README.md).
 
 ## What this repo teaches
 
@@ -89,6 +90,32 @@ Read these files in order:
 ```
 
 The app starts on `http://localhost:8080`.
+
+## Production deployment
+
+This repo now includes a simple production deployment target using Docker Compose and PostgreSQL.
+
+Main files:
+
+- `deploy/docker-compose.prod.yml`
+- `deploy/app.env.example`
+- `src/main/resources/application-prod.yml`
+
+Main production differences:
+
+- PostgreSQL instead of H2
+- `prod` Spring profile
+- externalized credentials
+- public `/actuator/health` endpoint for health checks
+- Swagger UI disabled in production
+
+Quick start:
+
+```bash
+cp deploy/app.env.example deploy/app.env
+docker compose --env-file deploy/app.env -f deploy/docker-compose.prod.yml up -d --build
+curl http://localhost:8080/actuator/health
+```
 
 ## Run with Docker
 

@@ -13,6 +13,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
 springdoc:
   swagger-ui:
@@ -30,3 +33,17 @@ app:
       - validation
       - jpa
       - security
+  security:
+    username: student
+    password: password
+    role: STUDENT
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true

@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  h2:
+    console:
+      enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: never
+
+springdoc:
+  swagger-ui:
+    enabled: false
+
+app:
+  security:
+    username: ${APP_SECURITY_USERNAME}
+    password: ${APP_SECURITY_PASSWORD}
+    role: ${APP_SECURITY_ROLE:STUDENT}
+
+management:
+  endpoint:
+    health:
+      show-details: never

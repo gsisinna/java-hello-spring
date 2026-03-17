@@ -34,6 +34,7 @@ Main files:
 
 - `Dockerfile`
 - `docker-compose.yml`
+- `deploy/docker-compose.prod.yml`
 - `.dockerignore`
 
 Commands:
@@ -48,6 +49,7 @@ Use Docker when:
 
 - you want a consistent runtime
 - you want to test the app without relying on local Java tooling
+- you want to deploy the app with the production compose stack
 
 ## GitHub Actions
 
@@ -60,6 +62,21 @@ Purpose:
 - run tests automatically on push and pull request
 
 This is the first step toward real CI/CD habits.
+
+## Production deployment files
+
+Main files:
+
+- `deploy/docker-compose.prod.yml`
+- `deploy/app.env.example`
+- `src/main/resources/application-prod.yml`
+
+Use these when you want:
+
+- PostgreSQL instead of H2
+- externalized secrets
+- health checks through `/actuator/health`
+- a deployment-oriented compose stack
 
 ## OpenAPI and Swagger
 

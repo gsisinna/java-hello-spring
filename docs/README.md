@@ -10,6 +10,7 @@ This folder explains how to use the repository as a guided Java and Spring Boot 
 4. [Spring Boot](./spring-boot.md)
 5. [Testing](./testing.md)
 6. [Tooling](./tooling.md)
+7. [Deployment](./deployment.md)
 
 ## Main idea
 

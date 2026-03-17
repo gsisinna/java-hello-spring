@@ -22,6 +22,8 @@ This project is built so you can learn, test, and modify small examples instead 
 - service
 - dependency injection
 - request/response model
+- Swagger UI
+- OpenAPI YAML
 
 ## Start here
 
@@ -88,6 +90,16 @@ curl -X POST http://localhost:8080/api/students \
     }
   }'
 ```
+
+## Swagger and OpenAPI
+
+After starting the app with `./gradlew bootRun`, open:
+
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+- OpenAPI YAML: `http://localhost:8080/v3/api-docs.yaml`
+
+Swagger UI is generated from the controller and model annotations in the code.
 
 ## Run the tests
 

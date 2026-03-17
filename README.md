@@ -34,6 +34,8 @@ Full repo learning notes are in [docs/README.md](./docs/README.md).
 - JPA + H2 persistence
 - basic authentication with Spring Security
 - unit, repository, and integration tests
+- enums
+- `@ConfigurationProperties`
 
 ## Start here
 
@@ -48,7 +50,8 @@ Read these files in order:
 7. `src/main/java/com/example/demo/spring/service/StudentService.java`
 8. `src/main/java/com/example/demo/spring/persistence/service/CourseService.java`
 9. `src/main/java/com/example/demo/spring/persistence/controller/CourseController.java`
-10. `src/test/java/com/example/demo/spring/persistence/controller/CourseControllerIntegrationTest.java`
+10. `src/main/java/com/example/demo/spring/config/AppLearningProperties.java`
+11. `src/test/java/com/example/demo/spring/persistence/controller/CourseControllerIntegrationTest.java`
 
 ## Package guide
 
@@ -76,6 +79,8 @@ Read these files in order:
   - request and response models
 - `com.example.demo.spring.persistence`
   - validation, JPA, H2, and security examples
+- `com.example.demo.spring.config`
+  - OpenAPI config and typed configuration properties
 
 ## Run the app
 
@@ -142,6 +147,12 @@ Get secured courses with basic auth:
 curl -u student:password http://localhost:8080/api/courses
 ```
 
+Show typed configuration properties:
+
+```bash
+curl http://localhost:8080/api/learning-info
+```
+
 Create a secured database-backed course:
 
 ```bash
@@ -149,10 +160,29 @@ curl -u student:password -X POST http://localhost:8080/api/courses \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Spring Data JPA",
-    "level": "intermediate",
+    "level": "INTERMEDIATE",
     "durationInHours": 7,
     "published": true
   }'
+```
+
+Update a course:
+
+```bash
+curl -u student:password -X PUT http://localhost:8080/api/courses/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Updated Java Generics",
+    "level": "ADVANCED",
+    "durationInHours": 10,
+    "published": false
+  }'
+```
+
+Delete a course:
+
+```bash
+curl -u student:password -X DELETE http://localhost:8080/api/courses/2
 ```
 
 ## Swagger and OpenAPI
@@ -193,7 +223,7 @@ Different test layers in this repo:
 
 - unit tests: small classes without Spring, such as `StudentTest` and `CourseServiceTest`
 - repository tests: JPA + H2 with a Spring Boot integration test, such as `CourseRepositoryTest`
-- integration tests: full Spring Boot + MockMvc, such as `StudentControllerTest` and `CourseControllerIntegrationTest`
+- integration tests: full Spring Boot + MockMvc, such as `StudentControllerTest`, `CourseControllerIntegrationTest`, and `LearningInfoControllerTest`
 
 ## GitHub CI
 
@@ -226,9 +256,11 @@ It runs on every push and pull request, sets up Java 17, and executes:
 - Inheritance: `Person`, `LearningStudent`
 - Generics: `Box<T>`
 - Streams: `StudentAnalytics`
+- Enums: `CourseLevel`
 - Exceptions: `InvalidScoreException`, `StudentNotFoundException`
 - Annotations: `@LearningExample`, `@Service`, `@RestController`, `@RestControllerAdvice`, `@Entity`, `@Valid`
 - Dependency injection: `StudentController` gets `StudentService`, `StudentService` gets `InMemoryStudentRepository`
 - Validation: `CreateCourseRequest`
 - Persistence: `CourseEntity`, `CourseRepository`, H2
 - Security: HTTP basic auth for `/api/courses/**` with user `student` / `password`
+- Typed configuration: `AppLearningProperties` bound from `application.yml`

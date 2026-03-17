@@ -3,6 +3,7 @@ package com.example.demo.spring.persistence.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Schema(name = "CreateCourseRequest", description = "Request body used to create a persistent course.")
@@ -12,9 +13,9 @@ public record CreateCourseRequest(
 	@Size(min = 3, max = 100)
 	@Schema(description = "Course title", example = "Spring Boot Security")
 	String title,
-	@NotBlank
-	@Schema(description = "Course level", example = "intermediate")
-	String level,
+	@NotNull
+	@Schema(description = "Course level", example = "INTERMEDIATE")
+	CourseLevel level,
 	@Min(1)
 	@Schema(description = "Estimated duration in hours", example = "8")
 	int durationInHours,

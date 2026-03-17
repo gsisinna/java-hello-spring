@@ -9,8 +9,8 @@ public record CourseResponse(
 	Long id,
 	@Schema(description = "Course title", example = "Spring Boot Security")
 	String title,
-	@Schema(description = "Course level", example = "intermediate")
-	String level,
+	@Schema(description = "Course level", example = "INTERMEDIATE")
+	CourseLevel level,
 	@Schema(description = "Estimated duration in hours", example = "8")
 	int durationInHours,
 	@Schema(description = "Whether the course is published", example = "true")

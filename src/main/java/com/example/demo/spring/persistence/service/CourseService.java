@@ -44,6 +44,26 @@ public class CourseService {
 		return toResponse(saved);
 	}
 
+	public CourseResponse update(long id, CreateCourseRequest request) {
+		CourseEntity entity = courseRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("Course with id " + id + " was not found"));
+
+		entity.update(
+			request.title(),
+			request.level(),
+			request.durationInHours(),
+			request.published()
+		);
+
+		return toResponse(courseRepository.save(entity));
+	}
+
+	public void delete(long id) {
+		CourseEntity entity = courseRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("Course with id " + id + " was not found"));
+		courseRepository.delete(entity);
+	}
+
 	private CourseResponse toResponse(CourseEntity entity) {
 		return new CourseResponse(
 			entity.getId(),

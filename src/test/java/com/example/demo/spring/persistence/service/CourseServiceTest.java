@@ -1,6 +1,7 @@
 package com.example.demo.spring.persistence.service;
 
 import com.example.demo.spring.persistence.entity.CourseEntity;
+import com.example.demo.spring.persistence.model.CourseLevel;
 import com.example.demo.spring.persistence.model.CourseResponse;
 import com.example.demo.spring.persistence.model.CreateCourseRequest;
 import com.example.demo.spring.persistence.repository.CourseRepository;
@@ -26,11 +27,11 @@ class CourseServiceTest {
 
 		CourseService service = new CourseService(repository);
 
-		CourseResponse response = service.create(new CreateCourseRequest("Spring Security", "advanced", 8, true));
+		CourseResponse response = service.create(new CreateCourseRequest("Spring Security", CourseLevel.ADVANCED, 8, true));
 
 		assertEquals(1L, response.id());
 		assertEquals("Spring Security", response.title());
-		assertEquals("advanced", response.level());
+		assertEquals(CourseLevel.ADVANCED, response.level());
 		assertEquals(8, response.durationInHours());
 	}
 
@@ -47,7 +48,7 @@ class CourseServiceTest {
 	private static class CourseEntityFixture {
 		private CourseEntity savedEntity() {
 			// Reflection is used here only to simulate a database-generated id in a unit test.
-			CourseEntity entity = new CourseEntity("Spring Security", "advanced", 8, true);
+			CourseEntity entity = new CourseEntity("Spring Security", CourseLevel.ADVANCED, 8, true);
 			try {
 				var field = CourseEntity.class.getDeclaredField("id");
 				field.setAccessible(true);

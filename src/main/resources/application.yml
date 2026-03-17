@@ -20,3 +20,13 @@ springdoc:
     operations-sorter: alpha
   api-docs:
     path: /v3/api-docs
+
+app:
+  learning:
+    title: Java + Spring Boot Learning Repo
+    focus-topics:
+      - java basics
+      - spring mvc
+      - validation
+      - jpa
+      - security

@@ -107,6 +107,19 @@ Flow:
 3. invalid input triggers an exception
 4. `ApiExceptionHandler` turns it into a clean error response
 
+## Configuration properties
+
+Main files:
+
+- `AppLearningProperties`
+- `LearningInfoController`
+
+Key idea:
+
+- `@ConfigurationProperties` maps structured YAML into a typed Java object
+- this is cleaner than scattering config lookups through the code
+- the `/api/learning-info` endpoint makes the bound values visible at runtime
+
 ## Exception handling
 
 Main example:
@@ -134,6 +147,7 @@ Key ideas:
 
 - `@Entity` maps a class to a database table
 - a `JpaRepository` gives CRUD operations
+- `CourseLevel` enum keeps the `level` field restricted to valid values
 - H2 provides an in-memory database for easy learning
 - `data.sql` seeds example rows at startup
 

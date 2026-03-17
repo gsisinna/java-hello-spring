@@ -8,8 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,7 +46,7 @@ class CourseControllerIntegrationTest {
 				.content("""
 					{
 					  "title": "",
-					  "level": "beginner",
+					  "level": "BEGINNER",
 					  "durationInHours": 0,
 					  "published": true
 					}
@@ -62,13 +64,42 @@ class CourseControllerIntegrationTest {
 				.content("""
 					{
 					  "title": "Spring Data JPA",
-					  "level": "intermediate",
+					  "level": "INTERMEDIATE",
 					  "durationInHours": 7,
 					  "published": true
 					}
 					"""))
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.title").value("Spring Data JPA"))
-			.andExpect(jsonPath("$.durationInHours").value(7));
+			.andExpect(jsonPath("$.durationInHours").value(7))
+			.andExpect(jsonPath("$.level").value("INTERMEDIATE"));
+	}
+
+	@Test
+	void updateCourseReplacesStoredValues() throws Exception {
+		mockMvc.perform(put("/api/courses/1")
+				.with(httpBasic("student", "password"))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+					{
+					  "title": "Updated Java Generics",
+					  "level": "ADVANCED",
+					  "durationInHours": 10,
+					  "published": false
+					}
+					"""))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.title").value("Updated Java Generics"))
+			.andExpect(jsonPath("$.level").value("ADVANCED"))
+			.andExpect(jsonPath("$.published").value(false));
+	}
+
+	@Test
+	void deleteCourseRemovesExistingRecord() throws Exception {
+		mockMvc.perform(delete("/api/courses/2").with(httpBasic("student", "password")))
+			.andExpect(status().isNoContent());
+
+		mockMvc.perform(get("/api/courses/2").with(httpBasic("student", "password")))
+			.andExpect(status().isNotFound());
 	}
 }

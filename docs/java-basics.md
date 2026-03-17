@@ -159,6 +159,18 @@ Key idea:
 - generics let you write reusable classes while keeping type safety
 - `Box<String>` and `Box<Integer>` use the same class with different types
 
+## Enums
+
+Example:
+
+- `spring/persistence/model/CourseLevel.java`
+
+Key idea:
+
+- enums model a fixed set of allowed values
+- they are safer than raw strings
+- they work well for states, levels, and categories
+
 ## Streams and lambdas
 
 Example:

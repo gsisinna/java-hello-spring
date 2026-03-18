@@ -33,7 +33,7 @@ What they teach:
 
 - behavior-focused assertions
 - testing single classes
-- mocking with Mockito in `CourseServiceTest`
+- mocking ports and adapters with Mockito in `CourseServiceTest`
 
 ## Configuration tests
 
@@ -65,6 +65,7 @@ What they teach:
 - JSON assertions
 - authentication testing with `httpBasic(...)`
 - documentation endpoint checks
+- controller testing against a use-case interface instead of a concrete implementation
 
 ## How to read a test well
 

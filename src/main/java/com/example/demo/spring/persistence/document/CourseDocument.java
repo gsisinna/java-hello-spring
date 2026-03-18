@@ -20,11 +20,16 @@ public class CourseDocument {
 		// Spring Data MongoDB needs a no-args constructor when hydrating documents from the database.
 	}
 
-	public CourseDocument(String title, CourseLevel level, int durationInHours, boolean published) {
+	public CourseDocument(String id, String title, CourseLevel level, int durationInHours, boolean published) {
+		this.id = id;
 		this.title = title;
 		this.level = level;
 		this.durationInHours = durationInHours;
 		this.published = published;
+	}
+
+	public CourseDocument(String title, CourseLevel level, int durationInHours, boolean published) {
+		this(null, title, level, durationInHours, published);
 	}
 
 	public String getId() {

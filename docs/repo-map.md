@@ -39,14 +39,18 @@ This page explains why each package exists.
 
 ## Spring persistence packages
 
+- `spring.persistence.domain`
+  - framework-independent business model
 - `spring.persistence.document`
   - MongoDB document classes
 - `spring.persistence.repository`
-  - Spring Data repository interfaces
+  - Spring Data repository interfaces used only by the adapter
 - `spring.persistence.config`
   - seed data and persistence bootstrap
 - `spring.persistence.service`
-  - business logic using the repository layer
+  - input port and application service
+- `spring.persistence.store`
+  - output port plus MongoDB adapter and mapper
 - `spring.persistence.controller`
   - secured HTTP endpoints
 - `spring.persistence.model`

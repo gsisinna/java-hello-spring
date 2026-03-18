@@ -5,6 +5,15 @@ This project is built so you can learn, test, and modify small examples instead 
 Full repo learning notes are in [docs/README.md](./docs/README.md).
 Deployment notes and production files are in [deploy/README.md](./deploy/README.md).
 
+## Software architecture
+
+The repo now teaches two architectural styles:
+
+- a simple layered flow for the student example
+- a ports-and-adapters style for the course example
+
+Read [docs/architecture.md](./docs/architecture.md) for the design rationale and package boundaries.
+
 ## What this repo teaches
 
 ### Plain Java
@@ -50,10 +59,13 @@ Read these files in order:
 5. `src/main/java/com/example/demo/basics/generics/Box.java`
 6. `src/main/java/com/example/demo/basics/streams/StudentAnalytics.java`
 7. `src/main/java/com/example/demo/spring/service/StudentService.java`
-8. `src/main/java/com/example/demo/spring/persistence/service/CourseService.java`
-9. `src/main/java/com/example/demo/spring/persistence/controller/CourseController.java`
-10. `src/main/java/com/example/demo/spring/config/AppLearningProperties.java`
-11. `src/test/java/com/example/demo/spring/persistence/controller/CourseControllerTest.java`
+8. `src/main/java/com/example/demo/spring/persistence/domain/Course.java`
+9. `src/main/java/com/example/demo/spring/persistence/service/CourseService.java`
+10. `src/main/java/com/example/demo/spring/persistence/service/CourseApplicationService.java`
+11. `src/main/java/com/example/demo/spring/persistence/store/MongoCourseStore.java`
+12. `src/main/java/com/example/demo/spring/persistence/controller/CourseController.java`
+13. `src/main/java/com/example/demo/spring/config/AppLearningProperties.java`
+14. `src/test/java/com/example/demo/spring/persistence/controller/CourseControllerTest.java`
 
 ## Package guide
 
@@ -80,7 +92,7 @@ Read these files in order:
 - `com.example.demo.spring.model`
   - request and response models
 - `com.example.demo.spring.persistence`
-  - validation, MongoDB documents, JSON APIs, and security examples
+  - validation, MongoDB documents, layered architecture, and security examples
 - `com.example.demo.spring.config`
   - OpenAPI config and typed configuration properties
 

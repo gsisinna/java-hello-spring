@@ -1,9 +1,11 @@
 package com.example.demo.spring.persistence.controller;
 
 import com.example.demo.spring.model.ErrorResponse;
+import com.example.demo.spring.persistence.domain.Course;
 import com.example.demo.spring.persistence.model.CourseResponse;
 import com.example.demo.spring.persistence.model.CreateCourseRequest;
 import com.example.demo.spring.persistence.service.CourseService;
+import com.example.demo.spring.persistence.service.UpsertCourseCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,7 +47,9 @@ public class CourseController {
 		content = @Content(array = @ArraySchema(schema = @Schema(implementation = CourseResponse.class)))
 	)
 	public List<CourseResponse> findAll() {
-		return courseService.findAll();
+		return courseService.findAll().stream()
+			.map(this::toResponse)
+			.toList();
 	}
 
 	@GetMapping("/{id}")
@@ -63,7 +67,7 @@ public class CourseController {
 		)
 	})
 	public CourseResponse findById(@PathVariable String id) {
-		return courseService.findById(id);
+		return toResponse(courseService.findById(id));
 	}
 
 	@PostMapping
@@ -82,7 +86,7 @@ public class CourseController {
 		)
 	})
 	public CourseResponse create(@Valid @RequestBody CreateCourseRequest request) {
-		return courseService.create(request);
+		return toResponse(courseService.create(toCommand(request)));
 	}
 
 	@PutMapping("/{id}")
@@ -100,7 +104,7 @@ public class CourseController {
 		)
 	})
 	public CourseResponse update(@PathVariable String id, @Valid @RequestBody CreateCourseRequest request) {
-		return courseService.update(id, request);
+		return toResponse(courseService.update(id, toCommand(request)));
 	}
 
 	@DeleteMapping("/{id}")
@@ -116,5 +120,24 @@ public class CourseController {
 	})
 	public void delete(@PathVariable String id) {
 		courseService.delete(id);
+	}
+
+	private UpsertCourseCommand toCommand(CreateCourseRequest request) {
+		return new UpsertCourseCommand(
+			request.title(),
+			request.level(),
+			request.durationInHours(),
+			request.published()
+		);
+	}
+
+	private CourseResponse toResponse(Course course) {
+		return new CourseResponse(
+			course.id(),
+			course.title(),
+			course.level(),
+			course.durationInHours(),
+			course.published()
+		);
 	}
 }

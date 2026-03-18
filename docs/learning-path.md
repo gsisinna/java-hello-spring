@@ -73,10 +73,14 @@ Learn:
 Read:
 
 - `spring/persistence/model/CreateCourseRequest.java`
+- `spring/persistence/domain/Course.java`
 - `spring/persistence/document/CourseDocument.java`
 - `spring/persistence/repository/CourseRepository.java`
+- `spring/persistence/store/CourseStore.java`
+- `spring/persistence/store/MongoCourseStore.java`
 - `spring/persistence/config/CourseDataInitializer.java`
 - `spring/persistence/service/CourseService.java`
+- `spring/persistence/service/CourseApplicationService.java`
 - `spring/persistence/controller/CourseController.java`
 - `spring/security/SecurityConfig.java`
 
@@ -84,6 +88,8 @@ Learn:
 
 - validation with `@Valid`
 - constraints like `@NotBlank` and `@Min`
+- domain model vs persistence model
+- input port vs output port
 - MongoDB document mapping
 - JSON request/response flow
 - basic auth with Spring Security

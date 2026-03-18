@@ -1,10 +1,10 @@
 package com.example.demo.spring.persistence.controller;
 
 import com.example.demo.spring.controller.ApiExceptionHandler;
+import com.example.demo.spring.persistence.domain.Course;
 import com.example.demo.spring.persistence.model.CourseLevel;
-import com.example.demo.spring.persistence.model.CourseResponse;
-import com.example.demo.spring.persistence.model.CreateCourseRequest;
 import com.example.demo.spring.persistence.service.CourseService;
+import com.example.demo.spring.persistence.service.UpsertCourseCommand;
 import com.example.demo.spring.security.SecurityConfig;
 import com.example.demo.spring.springcommon.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ class CourseControllerTest {
 	@Test
 	void authenticatedRequestReturnsCourseDocumentsAsJson() throws Exception {
 		when(courseService.findAll()).thenReturn(List.of(
-			new CourseResponse("course-101", "Java Generics Deep Dive", CourseLevel.INTERMEDIATE, 6, true)
+			new Course("course-101", "Java Generics Deep Dive", CourseLevel.INTERMEDIATE, 6, true)
 		));
 
 		mockMvc.perform(get("/api/courses").with(httpBasic("student", "password")))
@@ -86,8 +86,8 @@ class CourseControllerTest {
 
 	@Test
 	void validCoursePayloadReturnsCreatedDocument() throws Exception {
-		when(courseService.create(any(CreateCourseRequest.class)))
-			.thenReturn(new CourseResponse("course-202", "Spring Data MongoDB", CourseLevel.INTERMEDIATE, 7, true));
+		when(courseService.create(any(UpsertCourseCommand.class)))
+			.thenReturn(new Course("course-202", "Spring Data MongoDB", CourseLevel.INTERMEDIATE, 7, true));
 
 		mockMvc.perform(post("/api/courses")
 				.with(httpBasic("student", "password"))
@@ -108,8 +108,8 @@ class CourseControllerTest {
 
 	@Test
 	void updateCourseReplacesStoredValues() throws Exception {
-		when(courseService.update(any(String.class), any(CreateCourseRequest.class)))
-			.thenReturn(new CourseResponse("course-101", "Updated Java Generics", CourseLevel.ADVANCED, 10, false));
+		when(courseService.update(any(String.class), any(UpsertCourseCommand.class)))
+			.thenReturn(new Course("course-101", "Updated Java Generics", CourseLevel.ADVANCED, 10, false));
 
 		mockMvc.perform(put("/api/courses/course-101")
 				.with(httpBasic("student", "password"))

@@ -1,6 +1,6 @@
 package com.example.demo.spring.controller;
 
-import com.example.demo.spring.persistence.repository.CourseRepository;
+import com.example.demo.spring.persistence.store.CourseStore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ class StudentControllerTest {
 	private MockMvc mockMvc;
 
 	@MockitoBean
-	private CourseRepository courseRepository;
+	private CourseStore courseStore;
 
 	@Test
 	void getStudentsReturnsSeedData() throws Exception {

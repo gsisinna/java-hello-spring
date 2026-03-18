@@ -6,11 +6,12 @@ This folder explains how to use the repository as a guided Java and Spring Boot 
 
 1. [Learning Path](./learning-path.md)
 2. [Repo Map](./repo-map.md)
-3. [Java Basics](./java-basics.md)
-4. [Spring Boot](./spring-boot.md)
-5. [Testing](./testing.md)
-6. [Tooling](./tooling.md)
-7. [Deployment](./deployment.md)
+3. [Architecture](./architecture.md)
+4. [Java Basics](./java-basics.md)
+5. [Spring Boot](./spring-boot.md)
+6. [Testing](./testing.md)
+7. [Tooling](./tooling.md)
+8. [Deployment](./deployment.md)
 
 ## Main idea
 

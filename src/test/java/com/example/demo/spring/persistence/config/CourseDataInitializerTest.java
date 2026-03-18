@@ -1,10 +1,9 @@
 package com.example.demo.spring.persistence.config;
 
-import com.example.demo.spring.persistence.document.CourseDocument;
-import com.example.demo.spring.persistence.repository.CourseRepository;
+import com.example.demo.spring.persistence.domain.Course;
+import com.example.demo.spring.persistence.store.CourseStore;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -16,22 +15,21 @@ class CourseDataInitializerTest {
 
 	@Test
 	void seedRunnerAddsSampleDocumentsWhenCollectionIsEmpty() throws Exception {
-		CourseRepository repository = mock(CourseRepository.class);
-		when(repository.count()).thenReturn(0L);
+		CourseStore courseStore = mock(CourseStore.class);
+		when(courseStore.isEmpty()).thenReturn(true);
 
-		new CourseDataInitializer().seedCourses(repository).run();
+		new CourseDataInitializer().seedCourses(courseStore).run();
 
-		verify(repository, times(2)).save(any(CourseDocument.class));
+		verify(courseStore, times(2)).save(any(Course.class));
 	}
 
 	@Test
 	void seedRunnerSkipsInsertWhenDocumentsAlreadyExist() throws Exception {
-		CourseRepository repository = mock(CourseRepository.class);
-		when(repository.count()).thenReturn(3L);
+		CourseStore courseStore = mock(CourseStore.class);
+		when(courseStore.isEmpty()).thenReturn(false);
 
-		new CourseDataInitializer().seedCourses(repository).run();
+		new CourseDataInitializer().seedCourses(courseStore).run();
 
-		verify(repository, never()).save(any(CourseDocument.class));
-		assertEquals(3L, repository.count());
+		verify(courseStore, never()).save(any(Course.class));
 	}
 }

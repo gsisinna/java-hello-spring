@@ -3,7 +3,7 @@
 This repo contains two Spring learning tracks:
 
 - a simple in-memory student API
-- a more realistic secured course API with validation and persistence
+- a more realistic secured course API with validation, persistence, and explicit architectural boundaries
 
 ## Spring Boot structure
 
@@ -18,6 +18,14 @@ This repo shows both:
 
 - simple flow with in-memory data
 - document-backed flow with MongoDB
+
+The course module also shows a stronger architecture:
+
+- controller
+- use-case interface
+- application service
+- store interface
+- MongoDB adapter
 
 ## Controllers
 
@@ -46,6 +54,7 @@ Examples:
 
 - `StudentService`
 - `CourseService`
+- `CourseApplicationService`
 
 Service responsibilities:
 
@@ -70,6 +79,7 @@ Why it matters:
 - easier testing
 - clearer dependencies
 - better separation of responsibilities
+- support for dependency inversion through interfaces
 
 ## Request and response models
 
@@ -138,15 +148,21 @@ Handled cases include:
 
 Main files:
 
+- `Course`
 - `CourseDocument`
 - `CourseRepository`
+- `CourseStore`
+- `MongoCourseStore`
 - `application.yml`
 - `CourseDataInitializer`
 
 Key ideas:
 
+- `Course` is the framework-independent domain model
 - `@Document` maps a class to a MongoDB collection
 - a `MongoRepository` gives CRUD operations
+- `CourseStore` is the output port used by the application service
+- `MongoCourseStore` is the adapter that hides Spring Data details
 - `CourseLevel` enum keeps the `level` field restricted to valid values
 - MongoDB stores JSON-like documents instead of rows
 - `CourseDataInitializer` seeds example documents at startup

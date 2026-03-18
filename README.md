@@ -48,6 +48,15 @@ Read [docs/architecture.md](./docs/architecture.md) for the design rationale and
 - enums
 - `@ConfigurationProperties`
 
+### Frontend
+
+- Vue 3 + TypeScript with Vite
+- Vuetify UI layer
+- Pinia state management
+- Vue Router navigation
+- backend integration with the student and course APIs
+- a UI workflow for learning, testing, and modifying the backend
+
 ## Start here
 
 Read these files in order:
@@ -111,6 +120,55 @@ Then run the app:
 ```
 
 The app starts on `http://localhost:8080`.
+
+## Run the frontend
+
+The frontend lives in [frontend/README.md](./frontend/README.md).
+
+For a one-command local preview of frontend + backend together, run:
+
+```bash
+./scripts/start-dev.sh
+```
+
+That will:
+
+- start MongoDB with Docker Compose
+- start the Spring Boot backend on `http://localhost:8080`
+- start the Vue frontend on `http://localhost:5173`
+
+Press `Ctrl+C` to stop the frontend and backend process. MongoDB stays available in Docker.
+
+Manual start is also available if you want separate terminals.
+
+If MongoDB is already running locally and you do not want Docker in the loop, use:
+
+```bash
+./scripts/start-local-dev.sh
+```
+
+That script:
+
+- assumes MongoDB is already reachable on `localhost:27017`
+- stops old repo-owned Java and Vite processes
+- starts the backend on `http://localhost:8080`
+- starts the frontend on `http://localhost:5173`
+
+To stop any previous repo dev processes without starting again, run:
+
+```bash
+./scripts/stop-dev.sh
+```
+
+Start the backend first, then run:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend runs on `http://localhost:5173` and proxies API requests to the backend on `http://localhost:8080`.
 
 ## Production deployment
 
